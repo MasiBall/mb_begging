@@ -12,7 +12,7 @@ Citizen.CreateThread(function()
     while true do
         Wait(1)
 
-        if IsControlJustPressed(0, 38) then
+        if IsControlJustPressed(0, 74) then
             local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
 
             if aiming then
@@ -21,9 +21,9 @@ Citizen.CreateThread(function()
 
                 if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) and not cooldown and not IsPedDeadOrDying(targetPed, true) then
                     if #(pCoords - tCoords) >= Config.MaxDistance then
-                        ESX.ShowNotification(_U('target_too_far'))
+                        ESX.ShowNotification("Go closer so you don't have to shout")
                     else
-                        begSomeMoney(targetPed)
+                        begSomeMoney(playerPed, targetPed)
                     end
                 end
             end
@@ -31,26 +31,32 @@ Citizen.CreateThread(function()
     end
 end)
 
-function begSomeMoney(targetPed)
+function begSomeMoney(playerPed, targetPed)
     cooldown = true
 
     Citizen.CreateThread(function()
-        local dict = 'ig_4_base'
+        local dict = 'timetable@amanda@ig_4'
+        local dict2 = 'special_ped@jane@monologue_5@monologue_5c'
         RequestAnimDict(dict)
-        while not HasAnimDictLoaded(dict) do
+        RequestAnimDict(dict2)
+        while not HasAnimDictLoaded(dict) and HasAnimDictLoaded(dict2) do
             Wait(10)
         end
 
-        TaskStandStill(targetPed, Config.AnimationDuration *1000)
-        FreezeEntityPosition(targetPed, true)
-        TaskPlayAnim(targetPed, dict, 'timetable@amanda@ig_4', 8.0, -8, .01, 49, 0, 0, 0, 0)
-        ESX.ShowNotification(_U('begging'))
+        TaskPlayAnim(playerPed, dict, 'ig_4_base', 8.0, -8, .01, 49, 0, 0, 0, 0)
 
         local yesorno = math.random(1,100) -- Chances to get money
-        if yesorno > 30 then
+        if yesorno > 10 then
+            TaskStandStill(targetPed, Config.AnimationDuration *1000)
+            FreezeEntityPosition(targetPed, true)
+            ESX.ShowNotification('Pls give money!')
             Wait(Config.AnimationDuration *1000)
+            TaskPlayAnim(targetPed, dict2, 'brotheradrianhasshown_2', 8.0, -8, .01, 49, 0, 0, 0, 0)
             TriggerServerEvent('mb_begging:begsomemoney', targetPed)
             FreezeEntityPosition(targetPed, false)
+            ClearPedSecondaryTask(playerPed)
+        else
+            ClearPedSecondaryTask(playerPed)
         end
 
         if Config.ShouldWaitBetweenBegging then
