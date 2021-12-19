@@ -4,7 +4,7 @@ TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 RegisterServerEvent('mb_begging:begsomemoney')
 AddEventHandler('mb_begging:begsomemoney', function(source, targetPed)
-	local source = source
+    local source = source
     local xPlayer = ESX.GetPlayerFromId(source)
     local money = math.random(Config.MinMoney, Config.MaxMoney)
     local playerPos = GetEntityCoords(xPlayer, true)
