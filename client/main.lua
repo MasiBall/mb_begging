@@ -12,7 +12,7 @@ Citizen.CreateThread(function()
     while true do
         Wait(1)
 
-        if IsControlJustPressed(0, 74) then
+        if IsControlJustPressed(0, Config.Key) then
             local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
 
             if aiming then
