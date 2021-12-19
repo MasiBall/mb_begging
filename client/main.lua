@@ -20,12 +20,8 @@ Citizen.CreateThread(function()
                 local pCoords = GetEntityCoords(playerPed, true)
                 local tCoords = GetEntityCoords(targetPed, true)
 
-                if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) then
-                    if cooldown then
-                        ESX.ShowNotification(_U('too_recently'))
-                    elseif IsPedDeadOrDying(targetPed, true) then
-                        ESX.ShowNotification(_U('target_dead'))
-                    elseif #(pCoords - tCoords) >= Config.MaxDistance then
+                if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) and not cooldown and not IsPedDeadOrDying(targetPed, true) then
+                    if #(pCoords - tCoords) >= Config.MaxDistance then
                         ESX.ShowNotification(_U('target_too_far'))
                     else
                         begSomeMoney(targetPed)
