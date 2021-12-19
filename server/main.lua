@@ -19,7 +19,7 @@ AddEventHandler('mb_begging:begsomemoney', function(source, targetPed)
             sendToDiscordLogsEmbed(3158326, '`🙏` | Beg',' Player: `' ..GetPlayerName(source).. '` - `'..GetPlayerIdentifier(source, 0)..'` asked for some money and got `'..money..'`')
         end
     else
-        print('Player: '..GetPlayerName(source)' (ID: '..source..') - '..GetPlayerIdentifier(source, 0)..' tried to beg for money from too far distance. Distance: '..distance)
+        print('Player: '..GetPlayerName(source)' (ID: '..source..') - '..GetPlayerIdentifier(source, 0)..' tried to beg for money from too far distance. Distance: '..math.floor(distance))
     end
 end)
 
