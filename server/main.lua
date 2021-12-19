@@ -6,17 +6,18 @@ if Config.UseOldESX then
 end
 
 RegisterServerEvent('mb_begging:begsomemoney')
-AddEventHandler('mb_begging:begsomemoney', function(source, targetPed)
+AddEventHandler('mb_begging:begsomemoney', function(targetPed)
     local source = source
     local xPlayer = ESX.GetPlayerFromId(source)
+    local pPed = GetPlayerPed(source)
     local money = math.random(Config.MinMoney, Config.MaxMoney)
-    local playerPos = GetEntityCoords(xPlayer, true)
+    local playerPos = GetEntityCoords(pPed, true)
     local targetPedPos = GetEntityCoords(targetPed, true)
     local distance = #(playerPos - targetPedPos)
 
     if distance >= Config.MaxDistance + 4 then
         xPlayer.addMoney(money)
-        TriggerClientEvent('esx:showNotification', xPlayer, _U('begging_completed', money))
+        TriggerClientEvent('esx:showNotification', source, 'The person was nice and gave you '..money..'$')
         if Config.DiscordLog then
             sendToDiscordLogsEmbed(3158326, '`🙏` | Beg',' Player: `' ..GetPlayerName(source).. '` - `'..GetPlayerIdentifier(source, 0)..'` asked for some money and got `'..money..'`')
         end
