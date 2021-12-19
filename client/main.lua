@@ -17,8 +17,7 @@ Citizen.CreateThread(function()
 
             if aiming then
                 local playerPed = PlayerPedId()
-                local pCoords = GetEntityCoords(playerPed, true)
-                local tCoords = GetEntityCoords(targetPed, true)
+                local pCoords, tCoords = GetEntityCoords(playerPed, true), GetEntityCoords(targetPed, true)
 
                 if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) and not cooldown and not IsPedDeadOrDying(targetPed, true) then
                     if #(pCoords - tCoords) >= Config.MaxDistance then
@@ -47,7 +46,7 @@ function begSomeMoney(targetPed)
         TaskPlayAnim(targetPed, dict, 'timetable@amanda@ig_4', 8.0, -8, .01, 49, 0, 0, 0, 0)
         ESX.ShowNotification(_U('begging'))
 
-        local yesorno = math.random(1,100)
+        local yesorno = math.random(1,100) -- Chances to get money
         if yesorno > 30 then
             Wait(Config.AnimationDuration *1000)
             TriggerServerEvent('mb_begging:begsomemoney', targetPed)

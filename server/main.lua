@@ -1,9 +1,9 @@
+local discordwebhook = 'INSERT_WEBHOOK_HERE'
+
 if Config.UseOldESX then
     ESX = nil
     TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 end
-
-local discordwebhook = 'INSERT_WEBHOOK_HERE'
 
 RegisterServerEvent('mb_begging:begsomemoney')
 AddEventHandler('mb_begging:begsomemoney', function(source, targetPed)
