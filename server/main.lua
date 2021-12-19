@@ -1,5 +1,7 @@
-ESX = nil
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+if Config.UseOldESX then
+    ESX = nil
+    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+end
 
 local discordwebhook = 'INSERT_WEBHOOK_HERE'
 

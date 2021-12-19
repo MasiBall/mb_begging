@@ -1,6 +1,7 @@
 Config = {}
 Config.Locale = 'en'
 
+Config.UseOldESX = true
 Config.ShouldWaitBetweenBegging = true
 Config.Cooldown = 60 -- Duration of cooldown (In seconds)
 

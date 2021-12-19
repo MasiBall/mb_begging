@@ -1,12 +1,12 @@
-ESX = nil
 local cooldown = false
 
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-        Wait(0)
-    end
-end)
+ESX = ESX
+if Config.UseOldESX then
+    ESX = nil
+    TriggerEvent('esx:getSharedObject', function(obj)
+        ESX = obj
+    end)
+end
 
 Citizen.CreateThread(function()
     while true do
