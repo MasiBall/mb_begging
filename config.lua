@@ -2,6 +2,7 @@ Config = {}
 
 Config.UseOldESX = true
 Config.DiscordLog = true
+Config.Key = 74
 Config.ShouldWaitBetweenBegging = true
 Config.Cooldown = 60 -- Duration of cooldown (In seconds)
 
