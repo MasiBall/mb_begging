@@ -19,7 +19,7 @@ AddEventHandler('mb_begging:begsomemoney', function(targetPed)
         xPlayer.addMoney(money)
         TriggerClientEvent('esx:showNotification', source, 'The person was nice and gave you '..money..'$')
         if Config.DiscordLog then
-            sendToDiscordLogsEmbed(3158326, '`🙏` | Beg',' Player: `' ..GetPlayerName(source).. '` - `'..GetPlayerIdentifier(source, 0)..'` asked for some money and got `'..money..'`')
+            sendToDiscordLogsEmbed(3158326, '`🙏` | Beg',' Player: `' ..GetPlayerName(source).. '` - `'..GetPlayerIdentifier(source, 0)..'` asked for some money and got `'..money..'$`')
         end
     else
         print('Player: '..GetPlayerName(source)..' (ID: '..source..') - '..GetPlayerIdentifier(source, 0)..' tried to beg for money from too far distance. Distance: '..math.floor(distance))
