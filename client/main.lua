@@ -59,7 +59,7 @@ function begSomeMoney(targetPed)
         end
 
         if Config.ShouldWaitBetweenBegging then
-            Wait(math.random(Config.MinWaitSeconds, Config.MaxWaitSeconds) *1000)
+            Wait(Config.Cooldown *1000)
         end
 
         cooldown = false
