@@ -56,6 +56,7 @@ function begSomeMoney(playerPed, targetPed)
             FreezeEntityPosition(targetPed, false)
             ClearPedSecondaryTask(playerPed)
         else
+            ESX.ShowNotification("The person didn't want to give you any money")
             ClearPedSecondaryTask(playerPed)
         end
 
