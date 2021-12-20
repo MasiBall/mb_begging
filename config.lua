@@ -1,8 +1,7 @@
 Config = {}
 
-Config.UseOldESX = true -- Set to true if you don't have imports.lua file in your es_extended
+Config.Framework = "esx" -- Set to "OldESX" if you use the Old ESX, Set to "QBCore" if you use QBCore, 
 Config.DiscordLog = true
-Config.Key = 74 -- Key to beg
 Config.ShouldWaitBetweenBegging = true
 Config.Cooldown = 60 -- Duration of cooldown (In seconds)
 
