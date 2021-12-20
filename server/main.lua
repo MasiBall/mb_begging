@@ -1,14 +1,20 @@
 local discordwebhook = 'INSERT_WEBHOOK_HERE'
-
-if Config.UseOldESX then
+local QBCore = nil
+if Config.Framework == "OldESX" then
     ESX = nil
     TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+elseif  Config.Framework == "QBCore" then
+    QBCore = exports['qb-core']:GetCoreObject()
 end
 
 RegisterServerEvent('mb_begging:begsomemoney')
 AddEventHandler('mb_begging:begsomemoney', function(targetPed)
     local source = source
-    local xPlayer = ESX.GetPlayerFromId(source)
+    if Config.Framework == "QBCore" then
+        local xPlayer = QBCore.Functions.GetPlayer(source)     
+    else
+        local xPlayer = ESX.GetPlayerFromId(source)
+    end
     local pPed = GetPlayerPed(source)
     local money = math.random(Config.MinMoney, Config.MaxMoney)
     local playerPos = GetEntityCoords(pPed, true)
@@ -16,8 +22,13 @@ AddEventHandler('mb_begging:begsomemoney', function(targetPed)
     local distance = #(playerPos - targetPedPos)
 
     if distance >= Config.MaxDistance + 4 then
-        xPlayer.addMoney(money)
-        TriggerClientEvent('esx:showNotification', source, 'The person was nice and gave you '..money..'$')
+        if Config.Framework == "QBCore" then
+            xPlayer.Function.AddMoney("cash", money)
+            TriggerClientEvent('QBCore:Notify', source, 'The person was nice and gave you '..money..'$')
+        else
+            xPlayer.addMoney(money)
+            TriggerClientEvent('esx:showNotification', source, 'The person was nice and gave you '..money..'$')
+        end
         if Config.DiscordLog then
             sendToDiscordLogsEmbed(3158326, '`🙏` | Beg',' Player: `' ..GetPlayerName(source).. '` - `'..GetPlayerIdentifier(source, 0)..'` asked for some money and got `'..money..'$`')
         end
