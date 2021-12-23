@@ -1,40 +1,41 @@
 local cooldown = false
-
-ESX = ESX
-if Config.UseOldESX then
+local QBCore = nil
+local ESX = ESX
+if Config.Framework == "OldESX" then
     ESX = nil
     TriggerEvent('esx:getSharedObject', function(obj)
         ESX = obj
     end)
+elseif Config.Framework == "QBCore" then
+    QBCore = exports['qb-core']:GetCoreObject()
 end
 
-Citizen.CreateThread(function()
-    while true do
-        Wait(1)
+RegisterCommand("beg", function()
+    local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
+    if aiming then
+        local playerPed = PlayerPedId()
+        local pCoords, tCoords = GetEntityCoords(playerPed, true), GetEntityCoords(targetPed, true)
 
-        if IsControlJustPressed(0, Config.Key) then
-            local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
-
-            if aiming then
-                local playerPed = PlayerPedId()
-                local pCoords, tCoords = GetEntityCoords(playerPed, true), GetEntityCoords(targetPed, true)
-
-                if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) and not cooldown and not IsPedDeadOrDying(targetPed, true) then
-                    if #(pCoords - tCoords) >= Config.MaxDistance then
-                        ESX.ShowNotification("Go closer so you don't have to shout")
-                    else
-                        begSomeMoney(playerPed, targetPed)
-                    end
+        if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) and not cooldown and not IsPedDeadOrDying(targetPed, true) then
+            if #(pCoords - tCoords) >= Config.MaxDistance then
+                if Config.Framework == "QBCore" then
+                    QBCore.Functions.Notify("Go closer so you don't have to shout")
+                else
+                    ESX.ShowNotification("Go closer so you don't have to shout")
                 end
+            else
+                begSomeMoney(playerPed, targetPed)
             end
         end
     end
 end)
 
+RegisterKeyMapping('beg', 'Beg', 'keyboard', 'H')
+
 function begSomeMoney(playerPed, targetPed)
     cooldown = true
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local dict = 'timetable@amanda@ig_4'
         local dict2 = 'special_ped@jane@monologue_5@monologue_5c'
         RequestAnimDict(dict)
@@ -49,14 +50,24 @@ function begSomeMoney(playerPed, targetPed)
         if yesorno > 10 then
             TaskStandStill(targetPed, Config.AnimationDuration *1000)
             FreezeEntityPosition(targetPed, true)
-            ESX.ShowNotification('Pls give money!')
+            if Config.Framework == "QBCore" then
+                QBCore.Functions.Notify('Pls give money!')
+            else
+                ESX.ShowNotification('Pls give money!')
+            end
             Wait(Config.AnimationDuration *1000)
             TaskPlayAnim(targetPed, dict2, 'brotheradrianhasshown_2', 8.0, -8, .01, 49, 0, 0, 0, 0)
             TriggerServerEvent('mb_begging:begsomemoney', targetPed)
             FreezeEntityPosition(targetPed, false)
             ClearPedSecondaryTask(playerPed)
+            Wait(1000)
+            ClearPedSecondaryTask(targetPed)
         else
-            ESX.ShowNotification("The person didn't want to give you any money")
+            if Config.Framework == "QBCore" then
+                QBCore.Functions.Notify("The person didn't want to give you any money")
+            else
+                 ESX.ShowNotification("The person didn't want to give you any money")
+            end
             ClearPedSecondaryTask(playerPed)
         end
 
