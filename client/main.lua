@@ -29,29 +29,8 @@ RegisterCommand("beg", function()
         end
     end
 end)
+
 RegisterKeyMapping('beg', 'Beg', 'keyboard', 'H')
--- CreateThread(function()
---     while true do
---         Wait(1)
-
---         if IsControlJustPressed(0, Config.Key) then
---             local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
-
---             if aiming then
---                 local playerPed = PlayerPedId()
---                 local pCoords, tCoords = GetEntityCoords(playerPed, true), GetEntityCoords(targetPed, true)
-
---                 if DoesEntityExist(targetPed) and IsEntityAPed(targetPed) and not cooldown and not IsPedDeadOrDying(targetPed, true) then
---                     if #(pCoords - tCoords) >= Config.MaxDistance then
---                         ESX.ShowNotification("Go closer so you don't have to shout")
---                     else
---                         begSomeMoney(playerPed, targetPed)
---                     end
---                 end
---             end
---         end
---     end
--- end)
 
 function begSomeMoney(playerPed, targetPed)
     cooldown = true
@@ -81,6 +60,8 @@ function begSomeMoney(playerPed, targetPed)
             TriggerServerEvent('mb_begging:begsomemoney', targetPed)
             FreezeEntityPosition(targetPed, false)
             ClearPedSecondaryTask(playerPed)
+            Wait(1000)
+            ClearPedSecondaryTask(targetPed)
         else
             if Config.Framework == "QBCore" then
                 QBCore.Functions.Notify("The person didn't want to give you any money")

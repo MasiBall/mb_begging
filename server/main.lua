@@ -10,10 +10,11 @@ end
 RegisterServerEvent('mb_begging:begsomemoney')
 AddEventHandler('mb_begging:begsomemoney', function(targetPed)
     local source = source
+    local xPlayer = nil
     if Config.Framework == "QBCore" then
-        local xPlayer = QBCore.Functions.GetPlayer(source)     
+        xPlayer = QBCore.Functions.GetPlayer(source)
     else
-        local xPlayer = ESX.GetPlayerFromId(source)
+        xPlayer = ESX.GetPlayerFromId(source)
     end
     local pPed = GetPlayerPed(source)
     local money = math.random(Config.MinMoney, Config.MaxMoney)
@@ -23,7 +24,7 @@ AddEventHandler('mb_begging:begsomemoney', function(targetPed)
 
     if distance >= Config.MaxDistance + 4 then
         if Config.Framework == "QBCore" then
-            xPlayer.Function.AddMoney("cash", money)
+            xPlayer.Functions.AddMoney('cash', money)
             TriggerClientEvent('QBCore:Notify', source, 'The person was nice and gave you '..money..'$')
         else
             xPlayer.addMoney(money)
